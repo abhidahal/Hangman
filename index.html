@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Project</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Poppins:wght@300&family=Roboto:wght@300&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <div class="hero-section">
+        <div class="nav-container">
+            <div class="wrapper">
+                <nav>
+                    <div class="logo">
+                        <img src="images/logo1.png" alt="" width="90" height="90" />
+                    </div>
+                    <ul class="nav-items hidden">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Features</a>
+                        </li>
+                        <li>
+                            <a href="#">About Us</a>
+                        </li>
+                        <li>
+                            <a href="./login.html">Login</a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn-container">Sign Up</a>
+                        </li>
+                    </ul>
+                    <img src="./Images/Hamburger.svg" class="hamburger" onclick="openNav()" alt="" />
+                </nav>
+            </div>
+        </div>
+        <!-- Slide Bar -->
+        <div id="Sidenav" class="sidenav">
+            <div class="nav-container">
+                <div class="wrapper">
+                    <nav>
+                        <div class="logo">
+                            <img src="images/logo1.png" alt="" />
+                        </div>
+                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><img src="./Images/Close.svg"
+                                alt="" /></a>
+                    </nav>
+                </div>
+            </div>
+            <div class="content">
+                <div class="wrapper">
+                    <header>
+                        <a href="#">Home</a>
+                        <a href="#">Features</a>
+                        <a href="#">Features</a>
+                        <a href="#">About Us</a>
+                        <a href="./login.html">Login</a>
+                        <a href="#">Sign Up</a>
+                    </header>
+                </div>
+            </div>
+        </div>
+        <!-- Slide Bar End -->
+        <div class="content">
+            <div class="wrapper">
+
+
+                <div class="gamearea">
+                    <div id="Welcome_Message"></div>
+                    <p>Let's Play Hangman!</p>
+
+                    <div class="input-container">
+                        <input type="text" id="myText" value="" required="">
+                        <label>Enter your Guess Here</label>
+                    </div>
+                    <button onclick="Guessword()">Try it</button><br>
+                    <div id="game_area"></div>
+                    <div id="right-wrong"></div>
+                </div>
+                <div class="side">
+                    <img class="hangman" src="./images/bg-hangman.svg" alt="" srcset="">
+
+                    <img class="wiggle man " src="./images/bg-hangman-man.svg" alt="" srcset="">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./index.js"></script>
+
+</html>

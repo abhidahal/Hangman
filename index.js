@@ -1,65 +1,115 @@
-// random letter pick up
 // Name=prompt("Enter your name:");
-Name = "Player"
-document.getElementById("Welcome_Message").innerHTML = "Welcome " + Name
+const USERNAME = "Player";
+document.getElementById("Welcome_Message").textContent = `Welcome ${USERNAME}`;
 
-
-const words = ["sophisticated", "aperture", "insights", "dictionary", "agile"];
-let toBeGuessed = words[Math.floor(Math.random() * 5)];
-let guess = ""
-let count = 0
-let hint = ""
-console.log("Main Word = " + toBeGuessed)
-for (i = 0; i < toBeGuessed.length; i++) {
-  hint += "_";
-}
-document.getElementById("game_area").innerHTML = hint
-
-
-function Guessword() {
-  var guess = document.getElementById("myText").value;
-  console.log("______________________________")
-
-  console.log("GUESSED WORD = " + guess)
-  old_hint = hint
-
-  change_hint = update(guess)
-  console.log("HINT = " + old_hint)
-  console.log("HINT UPDATE = " + change_hint)
-
-
-  document.getElementById("game_area").innerHTML = hint
-  if (old_hint == change_hint) {
-    document.getElementById("right-wrong").innerHTML = "Wrong Guess"
-  }
-  else {
-    document.getElementById("right-wrong").innerHTML = "Right Guess"
-  }
-
-
-  return 0;
-}
-
-function update(guess) {
-  for (j = 0; j < toBeGuessed.length; j++) {
-
-    if (guess == toBeGuessed.substr(j, 1)) {
-      console.log(toBeGuessed.substr(j, 1) + "=" + guess + " => Matching letters ✅")
-      hint = hint.slice(0, j) + guess + hint.slice(j + 1, toBeGuessed.length)
+async function getRandomWords(numberOfWords = 10) {
+  const words = await fetch(
+    `https://random-words-api.herokuapp.com/w?n=${numberOfWords}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
     }
-    else {
-      console.log(toBeGuessed.substr(j, 1) + "!=" + guess + " => Differrent letters ❌")
+  )
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+    });
+
+  return words;
+}
+
+function spliceString(str, index, count, add) {
+  return str.slice(0, index) + (add || "") + str.slice(index + count);
+}
+
+async function startGame() {
+  const words = await getRandomWords();
+  const hangmanWord = words[Math.floor(Math.random() * words.length)];
+  const hangmanLetters = hangmanWord.split("");
+  const guessedLetters = [];
+  const wrongLetters = [];
+  const MAX_WRONG = 10;
+  let hint = "";
+  const tryButton = document.getElementById("try_button");
+  tryButton.removeEventListener("click", startGame);
+  tryButton.addEventListener("click", Guessword);
+  tryButton.textContent = "Try it";
+
+  hangmanLetters.forEach((letter, index) => {
+    if (index !== 0) {
+      hint += "_";
+      return;
+    }
+
+    hint += letter;
+  });
+  document.getElementById("game_area").textContent = hint;
+
+  function Guessword() {
+    let guess = document.getElementById("myText").value;
+
+    if (guess.length > 1) {
+      alert("Please enter a single letter");
+      return;
+    }
+
+    if (guessedLetters.includes(guess)) {
+      alert("You have already guessed this letter");
+      return;
+    }
+
+    let updatedHint = update(guess);
+
+    guessedLetters.push(guess);
+
+    if (updatedHint === hint && hint.substring(0, 1) == guess) {
+      alert("You have already guessed this letter");
+      return;
+    }
+
+    if (updatedHint == hint) {
+      wrongLetters.push(guess);
+      document.getElementById("right-wrong").textContent = "Wrong Guess";
+      if (MAX_WRONG === wrongLetters.length) gameOver({ state: "lost" });
+      return;
+    }
+    hint = updatedHint;
+    document.getElementById("game_area").textContent = updatedHint;
+    document.getElementById("right-wrong").textContent = "Right Guess";
+    if (hint == hangmanWord) {
+      gameOver({ state: "win" });
     }
   }
 
-  return (hint)
-  // var limit=6;
-  // document.getElementById("demo").innerHTML = x;
-  // Name=prompt("Enter your name:");
-  // document.write("Welcome " + Name );
+  function update(guess) {
+    let updatedHint = hint;
+    hangmanLetters.forEach((letter, index) => {
+      if (guess == letter) {
+        updatedHint = spliceString(updatedHint, index, 1, guess);
+      }
+    });
+
+    return updatedHint;
+    // var limit=6;
+    // document.getElementById("demo").innerHTML = x;
+    // Name=prompt("Enter your name:");
+    // document.write("Welcome " + Name );
+  }
+
+  function gameOver({ state }) {
+    document.getElementById("game_area").textContent = "Game Over";
+    const tryButton = document.getElementById("try_button");
+    tryButton.removeEventListener("click", Guessword);
+    tryButton.addEventListener("click", startGame);
+    tryButton.textContent = "Restart Game";
+    if (state === "lost")
+      alert(`You lost the game\nCorrect word: ${hangmanWord}`);
+    if (state === "win")
+      alert(`You won the game\nCorrect word: ${hangmanWord}`);
+  }
 }
-
-
 
 const nav = document.querySelector("nav");
 
@@ -78,3 +128,5 @@ function openNav() {
 function closeNav() {
   document.getElementById("Sidenav").style.width = "0";
 }
+
+startGame();

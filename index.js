@@ -3,19 +3,7 @@ const USERNAME = "Player";
 document.getElementById("Welcome_Message").textContent = `Welcome ${USERNAME}`;
 
 async function getRandomWords(numberOfWords = 10) {
-  const words = await fetch(
-    `https://random-words-api.herokuapp.com/w?n=${numberOfWords}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-    }
-  )
-    .then((res) => res.json())
-    .catch((err) => {
-      console.error(err);
-    });
+  const words = ["apple","banana"]
 
   return words;
 }

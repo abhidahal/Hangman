@@ -8,7 +8,7 @@ function spliceString(str, index, count, add) {
 
 async function startGame() {
   const words =  ["apple","banana"];
-  const hangmanWord = words[Math.floor(Math.random() * words.length)];
+  const hangmanWord = words[1];
   const hangmanLetters = hangmanWord.split("");
   const guessedLetters = [];
   const wrongLetters = [];

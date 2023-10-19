@@ -2,18 +2,12 @@
 const USERNAME = "Player";
 document.getElementById("Welcome_Message").textContent = `Welcome ${USERNAME}`;
 
-async function getRandomWords(numberOfWords = 10) {
-  const words = ["apple","banana"]
-
-  return words;
-}
-
 function spliceString(str, index, count, add) {
   return str.slice(0, index) + (add || "") + str.slice(index + count);
 }
 
 async function startGame() {
-  const words = await getRandomWords();
+  const words =  ["apple","banana"];
   const hangmanWord = words[Math.floor(Math.random() * words.length)];
   const hangmanLetters = hangmanWord.split("");
   const guessedLetters = [];
